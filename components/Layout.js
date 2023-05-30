@@ -1,7 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import TopNav from '@/public/navigation/TopNav';
-
+import TopNav from '@/components/navigation/TopNav';
 export default function Layout({title, children}) {
   return (
     <>
@@ -15,7 +14,7 @@ export default function Layout({title, children}) {
                 <TopNav/>
             </header>
 
-            <main  className='w-full h-full m-auto mt-16 bg-red-300 px-4'>
+            <main  className='w-full h-full m-auto mt-16 bg-red-300 py-16 px-4'>
                 {children}
             </main>
 

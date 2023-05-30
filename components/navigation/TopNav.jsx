@@ -5,9 +5,9 @@ import Link from 'next/link';
 export default function TopNav() {
   return (
     <>
-       <nav className='w-full h-16 bg-white flex items-center px-8 justify-between shadow-sm fixed'>
+      <nav className='w-full h-16 bg-white flex items-center px-8 justify-between shadow-sm fixed'>
             <Link href='/'>
-                <span className='text-2xl font-semibold'>Home</span>
+                <span className='text-4xl font-extrabold text-center'>MAC <sup className='font-semibold text-sm'>TM</sup></span>
             </Link>
 
             <div>
