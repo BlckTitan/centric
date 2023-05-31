@@ -27,7 +27,7 @@ const data = {
         {
             "id":3,
             "title":"Mens Cotton Jacket",
-            "slug": 'Winter Jacket',
+            "slug": 'Winter-Jacket',
             "brand": "Amiri",
             "stockCount": 20,
             "price":55.99,
@@ -42,7 +42,7 @@ const data = {
             "brand": "Under Amour",
             "stockCount": 20,
             "price":15.99,
-            "description":"The color could be slightly different between on the screen and in practice. / Please note that body builds vary by person, therefore, detailed size information should be reviewed below on the product description.",
+            "description":"The color could be slightly different between on the screen and in practice. Please note that body builds vary by person, therefore, detailed size information should be reviewed below on the product description.",
             "category":"men's clothing","image":"https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
             "rating":{"rate":2.1,"count":430}
         },
@@ -61,7 +61,7 @@ const data = {
         {
             "id":6,
             "title":"Solid Gold Petite Microwave ",
-            "slug": 'Home Appliance',
+            "slug": 'Home-Appliance',
             "brand": "Gold Petite",
             "stockCount": 20,
             "price":168,
