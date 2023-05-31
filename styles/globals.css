@@ -23,13 +23,11 @@
 }
 body {
   background-color: #e8e8e8;
-  color: #06478d;
+  color: rgb(30 27 75);
 }
 .card{
   @apply mb-5 block rounded-lg border border-gray-200 shadow-md;
-  width: 27em;
-  height: 40vh;
 }
 .primary-button{
-  @apply rounded bg-amber-300 py-2 px-4 shadow outline-none hover:bg-amber-400 active:bg-amber-500;
+  @apply rounded text-white bg-indigo-400 py-2 px-4 shadow outline-none hover:bg-indigo-500 active:bg-indigo-500;
 }

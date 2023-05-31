@@ -14,7 +14,7 @@ export default function Layout({title, children}) {
                 <TopNav/>
             </header>
 
-            <main  className='w-full h-full m-auto mt-16 bg-red-300 py-16 px-4'>
+            <main  className='w-full h-full m-auto mt-16 py-16 px-4'>
                 {children}
             </main>
 
