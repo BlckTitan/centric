@@ -1,22 +1,43 @@
 /* eslint-disable @next/next/no-img-element */
 import Layout from '@/components/Layout'
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import data from '@/utils/data';
 import Link from 'next/link';
+import {cartItem} from '@/slices/cartSlice';
 
 export default function ProductScreen() {
+    const [newItem, setNewItem] = useState()
+    //const [updatedItem, setUpdatedItem] = useState({})
+    const cart = useSelector((state) => state.cart.value);
+    const dispatch = useDispatch()
     const {query} = useRouter();
     const {slug} = query;
 
     const productData = data.products.find((item) => item.slug === slug)
+
+    const addToCartHandler = () => {
+        setNewItem({type: 'moonshine', quantity: 5})
+        const existingItem = cart.find((item) => item?.type === newItem?.type)
+        if(existingItem){
+            //let updatedItem;
+            cart.map((oldItems) => 
+                oldItems?.type === existingItem.type ? dispatch(cartItem(newItem))
+                : false
+            )
+        }else{
+            dispatch(cartItem([...cart, newItem]))
+        }
+    }
+
     if(!productData) return <p>Product not found!!!</p>
 
   return (
     <Layout title={productData.title}>
         <div className='py-2 w-full flex flex-col items-center'>
             
-            <div className='bg-white w-5/6 p-4 md:p-5 xl:p-10'>
+            <div className='bg-white w-4/6 p-4 md:p-5 xl:p-10'>
                     
                 <div className='w-full h-12 flex items-center justify-between '>
                     <Link href='/'>
@@ -46,6 +67,14 @@ export default function ProductScreen() {
                                 <li className='w-full xl:5/6 2xl:w-1/2 text-base md:text-lg xl:text-xl font-semibold'>Description: {productData.description}</li>
                             </ul>
                         </div>
+
+                        <div>{cart.length > 1 && cart.map((productItem, index) => (
+                            <div key={index}>
+                                <span>{(productItem?.type !== '') ? productItem?.type : ''}</span>
+                                <span>{productItem?.quantity > 0 ? productItem?.quantity : ''}</span>
+                            </div>
+                            ))}
+                        </div>
                     </div>
 
                     
@@ -59,7 +88,10 @@ export default function ProductScreen() {
                             <span>Status</span>
                             <span>{productData.stockCount > 0 ? 'In Stock': 'Unavailable'}</span>
                         </div>
-                        <button className='primary-button w-full h-12 xl:h-14 text-base xl:text-lg font-semibold'>Add to Card</button>
+                        <button 
+                            className='primary-button w-full h-12 xl:h-14 text-base xl:text-lg font-semibold'
+                            onClick={() => addToCartHandler()}
+                        >Add to Card</button>
                     </div>
                 </div>
             </div>

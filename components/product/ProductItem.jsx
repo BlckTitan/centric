@@ -30,7 +30,11 @@ export default function ProductItem({product}) {
                 <p className='text-slate-300 font-semibold'>Price - ${product.price}</p> 
                 <p className='text-slate-300 font-semibold'>{product.brand}</p>
             </div>
-            <button className='primary-button w-full h-10 2xl:h-14 text-lg md:text-xl font-semibold flex items-center justify-center' type='button'>Add to cart</button>
+            <button 
+                className='primary-button w-full h-10 2xl:h-14 text-lg md:text-xl font-semibold flex items-center justify-center' 
+                type='button'
+                
+            >Add to cart</button>
         </div>
 
     </div>
