@@ -11,24 +11,18 @@ export default function ProductItem({product}) {
 
 
     const addToCartHandler = (selectedItem) => {
-        if((cart.type === '') || (cart.quantity === 0)) {
-            dispatch(cartItem(selectedItem))
-            console.log([...cart, selectedItem])
+
+        const existingItem = cart.find((item) => item?.type === selectedItem?.type)
+        let match = (typeof existingItem === 'undefined') ? 'no match' : existingItem;
+
+        if(match !== 'no match') {
+            return false
         }else{
             dispatch(cartItem([...cart, selectedItem]))
-            console.log([...cart, selectedItem])
         }
-        //const existingItem = cart.find((item) => item?.type === newItem?.type)
-        /*if(existingItem){
-            //let updatedItem;
-            cart.map((oldItems) => 
-                oldItems?.type === existingItem.type ? dispatch(cartItem(newItem))
-                : false
-            )
-        }else{
-            dispatch(cartItem([...cart, newItem]))
-        }*/
+
     }
+
   return (
     <div className='card hover:scale-105 h-96'>
 

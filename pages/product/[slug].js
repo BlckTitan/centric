@@ -17,18 +17,23 @@ export default function ProductScreen() {
 
     const productData = data.products.find((item) => item.slug === slug)
 
-    const addToCartHandler = () => {
-        setNewItem({type: 'moonshine', quantity: 5})
-        const existingItem = cart.find((item) => item?.type === newItem?.type)
-        if(existingItem){
-            //let updatedItem;
-            cart.map((oldItems) => 
-                oldItems?.type === existingItem.type ? dispatch(cartItem(newItem))
-                : false
-            )
+    const cart = useSelector((state) => state.cart.value);
+    const dispatch = useDispatch()
+
+
+    const addToCartHandler = (selectedItem) => {
+
+        const existingItem = cart.find((item) => item?.type === selectedItem?.type)
+        let match = (typeof existingItem === 'undefined') ? 'no match' : existingItem;
+
+        if(match !== 'no match') {
+            return false
+            //dispatch(cartItem([...cart, {type: existingItem.type, quantity: existingItem.quantity}]))
         }else{
-            dispatch(cartItem([...cart, newItem]))
+            dispatch(cartItem([...cart, selectedItem]))
         }
+        
+        console.log(cart)
     }
 
     if(!productData) return <p>Product not found!!!</p>
