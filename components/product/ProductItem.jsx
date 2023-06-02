@@ -1,9 +1,34 @@
 /* eslint-disable @next/next/no-img-element */
 //import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react'
+import Link from 'next/link';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { cartItem  } from '@/slices/cartSlice';
 
 export default function ProductItem({product}) {
+    const cart = useSelector((state) => state.cart.value);
+    const dispatch = useDispatch()
+
+
+    const addToCartHandler = (selectedItem) => {
+        if((cart.type === '') || (cart.quantity === 0)) {
+            dispatch(cartItem(selectedItem))
+            console.log([...cart, selectedItem])
+        }else{
+            dispatch(cartItem([...cart, selectedItem]))
+            console.log([...cart, selectedItem])
+        }
+        //const existingItem = cart.find((item) => item?.type === newItem?.type)
+        /*if(existingItem){
+            //let updatedItem;
+            cart.map((oldItems) => 
+                oldItems?.type === existingItem.type ? dispatch(cartItem(newItem))
+                : false
+            )
+        }else{
+            dispatch(cartItem([...cart, newItem]))
+        }*/
+    }
   return (
     <div className='card hover:scale-105 h-96'>
 
@@ -33,7 +58,8 @@ export default function ProductItem({product}) {
             <button 
                 className='primary-button w-full h-10 2xl:h-14 text-lg md:text-xl font-semibold flex items-center justify-center' 
                 type='button'
-                
+                onClick={() => addToCartHandler({type: product.title, quantity: 1})}
+
             >Add to cart</button>
         </div>
 

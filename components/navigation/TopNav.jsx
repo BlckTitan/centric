@@ -16,7 +16,12 @@ export default function TopNav() {
             <div>
                 <Link href='/cart'>
                     <span className='mr-4'>Cart 
-                      {cart.length > 1 && <sup className='px-1.5 rounded-full text-red-600 text-lg font-bold'>{(cart.length - 1)}</sup>}
+                      {
+                        (cart.length > 1) && 
+                        <sup className='px-1.5 rounded-full text-red-600 text-lg font-bold'>
+                          {(cart.length - 1)}
+                        </sup>
+                      }
                     </span>
                 </Link>
                 <Link href='/login'>
