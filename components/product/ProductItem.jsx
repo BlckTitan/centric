@@ -2,26 +2,48 @@
 //import Image from 'next/image'
 import Link from 'next/link';
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { cartItem  } from '@/slices/cartSlice';
+import { message } from '@/slices/promptSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { cartItem } from '@/slices/cartSlice';
 
 export default function ProductItem({product}) {
-    const cart = useSelector((state) => state.cart.value);
+    const cart = useSelector((state) => state.cart.value)
+
     const dispatch = useDispatch()
 
+    const storeCartData = async (productOrder) =>{
+        await fetch('http://localhost:5000/cart', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(productOrder)
+        })
+
+        getCartData()
+    }
+
+    const getCartData = async () =>{
+        const req = await fetch('http://localhost:5000/cart')
+        const res = await req.json()
+
+        dispatch(cartItem(res))
+    }
 
     const addToCartHandler = (selectedItem) => {
 
-        const existingItem = cart.find((item) => item?.type === selectedItem?.type)
-        let match = (typeof existingItem === 'undefined') ? 'no match' : existingItem;
+        const existingItem = (cart === 0) ?
+        'cart empty' :
+        cart?.find((item) => item?.type === selectedItem?.type)
 
-        if(match !== 'no match') {
-            return false
+        if(existingItem !== selectedItem) {
+            storeCartData(selectedItem)
+        }else if(existingItem === 'cart empty'){
+            storeCartData(selectedItem)
         }else{
-            dispatch(cartItem([...cart, selectedItem]))
+            dispatch(message('Item already added to cart'))
+            return false
         }
-
     }
+
 
   return (
     <div className='card hover:scale-105 h-96'>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import TopNav from '@/components/navigation/TopNav';
+import TopNav from '@/components/navigation/TopNav.jsx';
 export default function Layout({title, children}) {
   return (
     <>

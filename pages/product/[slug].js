@@ -1,39 +1,49 @@
 /* eslint-disable @next/next/no-img-element */
 import Layout from '@/components/Layout'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import data from '@/utils/data';
+import data from '../../data.json';
 import Link from 'next/link';
 import {cartItem} from '@/slices/cartSlice';
 
 export default function ProductScreen() {
-    const [newItem, setNewItem] = useState()
-    //const [updatedItem, setUpdatedItem] = useState({})
+    const [productQty, setProductQty] = useState()
+    const [cartData, setCartData] = useState()
     const cart = useSelector((state) => state.cart.value);
     const dispatch = useDispatch()
     const {query} = useRouter();
     const {slug} = query;
 
-    const productData = data.products.find((item) => item.slug === slug)
+    const productData = data.products.find((item) => item.slug === slug);
 
-    const cart = useSelector((state) => state.cart.value);
-    const dispatch = useDispatch()
+    let existingItem = cartData?.find((item) => item?.type === productData?.title)
+    let match = (typeof existingItem === 'undefined') ? 0 : existingItem;
 
+    useEffect(() => {
+        getAllCartData()
+        setProductQty(productQty || ((existingItem) ? match.quantity : match));
+    }, [existingItem, match, productQty])
 
-    const addToCartHandler = (selectedItem) => {
+    
+    const getAllCartData = async () =>{
 
-        const existingItem = cart.find((item) => item?.type === selectedItem?.type)
-        let match = (typeof existingItem === 'undefined') ? 'no match' : existingItem;
+        const req = await fetch('http://localhost:5000/cart')
+        const res = await req.json()
+        setCartData(res)
+    } 
 
-        if(match !== 'no match') {
-            return false
-            //dispatch(cartItem([...cart, {type: existingItem.type, quantity: existingItem.quantity}]))
-        }else{
-            dispatch(cartItem([...cart, selectedItem]))
+    const addToCartHandler = () => {
+
+        if(match) {
+           let updatedItem = {type: existingItem.type, quantity: productQty}
+           dispatch(cartItem([...cart, updatedItem]))
+           
+           let updatedItemIndex = cart.indexOf(existingItem)
+           cart.slice(updatedItemIndex, 1)
+           //dispatch(cartItem(cart[2] = existingItem))
+           console.log(updatedItem, existingItem, cart)
         }
-        
-        console.log(cart)
     }
 
     if(!productData) return <p>Product not found!!!</p>
@@ -93,8 +103,21 @@ export default function ProductScreen() {
                             <span>Status</span>
                             <span>{productData.stockCount > 0 ? 'In Stock': 'Unavailable'}</span>
                         </div>
+                        
+                        <div className='w-full flex justify-between items-center py-2'>
+                            <span>Quantity</span>
+                            <div className='flex'>
+
+                                <input 
+                                    type='number'
+                                    className='border-2 border-solid border-gray-200 w-16 text-lg px-2 text-center'
+                                    value={productQty}
+                                    onChange={(e) => setProductQty(e.target.value)}
+                                />
+                            </div>
+                        </div>
                         <button 
-                            className='primary-button w-full h-12 xl:h-14 text-base xl:text-lg font-semibold'
+                            className='primary-button w-full h-12 2xl:h-14 text-base xl:text-lg font-semibold'
                             onClick={() => addToCartHandler()}
                         >Add to Card</button>
                     </div>
