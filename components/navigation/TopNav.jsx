@@ -2,8 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 
-
-
 export default function TopNav() {
   
   const cart = useSelector((state) => state.cart.value)

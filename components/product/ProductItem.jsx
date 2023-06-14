@@ -1,15 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
 //import Image from 'next/image'
 import Link from 'next/link';
-import React from 'react';
-import { message } from '@/slices/promptSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { displayMessage } from '@/slices/promptSlice';
+import { useDispatch } from 'react-redux';
 import { cartItem } from '@/slices/cartSlice';
 
 export default function ProductItem({product}) {
-    const cart = useSelector((state) => state.cart.value)
-
+    const [cart, setCart] = useState()
     const dispatch = useDispatch()
+
+    const getCartData = async () =>{
+        const req = await fetch('http://localhost:5000/cart')
+        const res = await req.json()
+
+        dispatch(cartItem(res.length))
+        setCart(res)
+    }
 
     const storeCartData = async (productOrder) =>{
         await fetch('http://localhost:5000/cart', {
@@ -20,31 +27,24 @@ export default function ProductItem({product}) {
 
         getCartData()
     }
-
-    const getCartData = async () =>{
-        const req = await fetch('http://localhost:5000/cart')
-        const res = await req.json()
-
-        dispatch(cartItem(res))
-    }
-
+    
     const addToCartHandler = (selectedItem) => {
 
-        const existingItem = (cart === 0) ?
-        'cart empty' :
-        cart?.find((item) => item?.type === selectedItem?.type)
+        const existingItem = cart?.find((item) => item?.type === selectedItem?.type)
 
-        if(existingItem !== selectedItem) {
-            storeCartData(selectedItem)
-        }else if(existingItem === 'cart empty'){
-            storeCartData(selectedItem)
-        }else{
-            dispatch(message('Item already added to cart'))
+        if(existingItem) {
+            dispatch(displayMessage('Item already added to cart'))
             return false
+        }else{
+            storeCartData(selectedItem)
         }
+        console.log(existingItem)
     }
 
 
+    useEffect(() => {
+        getCartData()
+    }, [])
   return (
     <div className='card hover:scale-105 h-96'>
 
