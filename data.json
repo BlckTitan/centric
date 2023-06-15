@@ -2,8 +2,33 @@
   "cart": [
     {
       "type": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-      "quantity": 1,
+      "quantity": "1566",
       "id": 1
+    },
+    {
+      "type": "Mens Casual Premium Slim Fit T-Shirts ",
+      "quantity": 1,
+      "id": 2
+    },
+    {
+      "type": "Mens Cotton Jacket",
+      "quantity": 1,
+      "id": 3
+    },
+    {
+      "type": "John Hardy Women's Legends Naga Gold & Silver Dragon Station Chain Bracelet",
+      "quantity": "200",
+      "id": 4
+    },
+    {
+      "type": "Mens Casual Slim Fit",
+      "quantity": "200",
+      "id": 5
+    },
+    {
+      "type": "Solid Gold Petite Microwave ",
+      "quantity": "100",
+      "id": 6
     }
   ],
   "products": [

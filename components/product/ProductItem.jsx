@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { displayMessage } from '@/slices/promptSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { cartItem } from '@/slices/cartSlice';
 
 export default function ProductItem({product}) {
     const [cart, setCart] = useState()
     const dispatch = useDispatch()
+    const message = useSelector((state) => state.promptMessage.value)
 
     const getCartData = async () =>{
         const req = await fetch('http://localhost:5000/cart')
@@ -26,8 +27,9 @@ export default function ProductItem({product}) {
         })
 
         getCartData()
+        dispatch(displayMessage('Item added successfully!'))
     }
-    
+
     const addToCartHandler = (selectedItem) => {
 
         const existingItem = cart?.find((item) => item?.type === selectedItem?.type)
@@ -38,13 +40,16 @@ export default function ProductItem({product}) {
         }else{
             storeCartData(selectedItem)
         }
-        console.log(existingItem)
     }
 
 
     useEffect(() => {
         getCartData()
-    }, [])
+        
+        setTimeout(() =>{
+            dispatch(displayMessage(''))
+        }, 5000)
+    }, [message])
   return (
     <div className='card hover:scale-105 h-96'>
 

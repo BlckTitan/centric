@@ -1,50 +1,73 @@
 /* eslint-disable @next/next/no-img-element */
 import Layout from '@/components/Layout'
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import data from '../../data.json';
 import Link from 'next/link';
-import {cartItem} from '@/slices/cartSlice';
+import { cartItem } from '@/slices/cartSlice';
+import { displayMessage } from '@/slices/promptSlice';
 
 export default function ProductScreen() {
-    const [productQty, setProductQty] = useState()
+
+
     const [cartData, setCartData] = useState()
-    const cart = useSelector((state) => state.cart.value);
+
     const dispatch = useDispatch()
     const {query} = useRouter();
     const {slug} = query;
 
     const productData = data.products.find((item) => item.slug === slug);
-
     let existingItem = cartData?.find((item) => item?.type === productData?.title)
     let match = (typeof existingItem === 'undefined') ? 0 : existingItem;
 
-    useEffect(() => {
-        getAllCartData()
-        setProductQty(productQty || ((existingItem) ? match.quantity : match));
-    }, [existingItem, match, productQty])
-
     
+    const [productQty, setProductQty] = useState(0 || match.quantity)
+
     const getAllCartData = async () =>{
 
         const req = await fetch('http://localhost:5000/cart')
         const res = await req.json()
+
         setCartData(res)
-    } 
+        dispatch(cartItem(res.length))
 
-    const addToCartHandler = () => {
-
-        if(match) {
-           let updatedItem = {type: existingItem.type, quantity: productQty}
-           dispatch(cartItem([...cart, updatedItem]))
-           
-           let updatedItemIndex = cart.indexOf(existingItem)
-           cart.slice(updatedItemIndex, 1)
-           //dispatch(cartItem(cart[2] = existingItem))
-           console.log(updatedItem, existingItem, cart)
-        }
     }
+
+    const addToCartHandler = async () => {
+        let updatedItem = {type: match.type, quantity: productQty}
+        let newItem = {type:productData.title, quantity: productQty}
+
+        if(existingItem){
+            await fetch(`http://localhost:5000/cart/${existingItem.id}`, {
+                method: 'PUT',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify(updatedItem)
+            })
+            dispatch(displayMessage('Item updated successfully!'))
+        }else{
+            await fetch('http://localhost:5000/cart', {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(newItem)
+        })
+        }
+        getAllCartData()
+
+    }
+
+    useEffect(() => {
+        getAllCartData()
+
+        if(match.quantity !== 0){
+            setProductQty(match.quantity);
+        }else if(match === 0){
+            setProductQty(match);
+        }else{
+            setProductQty(productQty);
+        }
+
+    }, [])
 
     if(!productData) return <p>Product not found!!!</p>
 
@@ -83,19 +106,19 @@ export default function ProductScreen() {
                             </ul>
                         </div>
 
-                        <div>{cart.length > 1 && cart.map((productItem, index) => (
+                        {/*<div>{cart.length > 1 && cart.map((productItem, index) => (
                             <div key={index}>
-                                <span>{(productItem?.type !== '') ? productItem?.type : ''}</span>
-                                <span>{productItem?.quantity > 0 ? productItem?.quantity : ''}</span>
+                                <span>{(productItem?.type !== '') ? productItem?.type : ''}25</span>
+                                <span>{productItem?.quantity > 0 ? productItem?.quantity : ''}30</span>
                             </div>
                             ))}
-                        </div>
+                        </div>*/}
                     </div>
 
                     
 
                     <div className='card h-fit p-5 xl:col-span-1 mt-8 xl:mt-0'>
-                        <div className='mb-2 flex justify-between'>
+                        <div className='mb-2 flex justify-between'> 
                             <span>Price</span>
                             <span>{productData.price}</span>
                         </div>
@@ -111,13 +134,13 @@ export default function ProductScreen() {
                                 <input 
                                     type='number'
                                     className='border-2 border-solid border-gray-200 w-16 text-lg px-2 text-center'
-                                    value={productQty}
+                                    value={productQty || match.quantity}
                                     onChange={(e) => setProductQty(e.target.value)}
                                 />
                             </div>
                         </div>
                         <button 
-                            className='primary-button w-full h-12 2xl:h-14 text-base xl:text-lg font-semibold'
+                            className='primary-button w-full h-12 text-base xl:text-lg font-semibold'
                             onClick={() => addToCartHandler()}
                         >Add to Card</button>
                     </div>
