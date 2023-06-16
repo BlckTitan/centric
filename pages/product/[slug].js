@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Layout from '@/components/Layout'
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import data from '../../data.json';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ import { cartItem } from '@/slices/cartSlice';
 import { displayMessage } from '@/slices/promptSlice';
 
 export default function ProductScreen() {
-
+    const message = useSelector((state) => state.promptMessage.value)
 
     const [cartData, setCartData] = useState()
 
@@ -47,10 +47,12 @@ export default function ProductScreen() {
             dispatch(displayMessage('Item updated successfully!'))
         }else{
             await fetch('http://localhost:5000/cart', {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(newItem)
-        })
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(newItem)
+            })
+            
+            dispatch(displayMessage('Item added successfully!'))
         }
         getAllCartData()
 
@@ -67,7 +69,11 @@ export default function ProductScreen() {
             setProductQty(productQty);
         }
 
-    }, [])
+        setTimeout(() =>{
+            dispatch(displayMessage(''))
+        }, 5000)
+
+    }, [message])
 
     if(!productData) return <p>Product not found!!!</p>
 
@@ -75,6 +81,12 @@ export default function ProductScreen() {
     <Layout title={productData.title}>
         <div className='py-2 w-full flex flex-col items-center'>
             
+            <div className='w-4/6 h-14 flex items-center justify-end'>
+
+            {(message !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{message}</span>}
+
+            </div>
+
             <div className='bg-white w-4/6 p-4 md:p-5 xl:p-10'>
                     
                 <div className='w-full h-12 flex items-center justify-between '>

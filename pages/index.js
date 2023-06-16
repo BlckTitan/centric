@@ -20,7 +20,7 @@ export default function Home({productData, cartData}) {
   if(!products) return <div>Loading...</div>
   
   return (
-      <Layout title="Home Page">
+      <Layout title="Homepage">
 
         <div className='w-full h-14 flex items-center justify-between'>
           <div className='hidden'>search</div>
