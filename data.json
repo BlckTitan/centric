@@ -1,11 +1,5 @@
 {
-  "cart": [
-    {
-      "type": "Solid Gold Petite Microwave ",
-      "quantity": "1",
-      "id": 1
-    }
-  ],
+  "cart": [],
   "products": [
     {
       "id": 1,

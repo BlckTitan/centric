@@ -31,3 +31,12 @@ body {
 .primary-button{
   @apply rounded text-white bg-indigo-400 py-2 px-4 shadow outline-none hover:bg-indigo-500 active:bg-indigo-500;
 }
+div.pricing{
+  @apply text-base font-normal p-1;
+}
+div.pricing > div{
+  @apply font-semibold w-full md:w-1/2 flex items-center justify-between;
+}
+div.pricing > div > span.price{
+  @apply text-gray-500;
+}

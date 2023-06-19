@@ -30,8 +30,10 @@ export default function ProductItem({product}) {
         dispatch(displayMessage('Item added successfully!'))
     }
 
-    const addToCartHandler = (selectedItem) => {
-
+    const addToCartHandler = () => {
+        const newItem = {type: product.title, quantity: 1, price: product.price, img: product.image, slug: product.slug}
+        const itemPriceByQty = (newItem.price * newItem.quantity)
+        const selectedItem = {type: product.title, quantity: 1, price: product.price, img: product.image, slug:product.slug, totalItemPrice: itemPriceByQty}
         const existingItem = cart?.find((item) => item?.type === selectedItem?.type)
 
         if(existingItem) {
@@ -79,7 +81,7 @@ export default function ProductItem({product}) {
             <button 
                 className='primary-button w-full h-10 2xl:h-14 text-lg md:text-xl font-semibold flex items-center justify-center' 
                 type='button'
-                onClick={() => addToCartHandler({type: product.title, quantity: 1})}
+                onClick={() => addToCartHandler()}
 
             >Add to cart</button>
         </div>

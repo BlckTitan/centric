@@ -33,10 +33,15 @@ export default function ProductScreen() {
         dispatch(cartItem(res.length))
 
     }
-
+    
     const addToCartHandler = async () => {
-        let updatedItem = {type: match.type, quantity: productQty}
-        let newItem = {type:productData.title, quantity: productQty}
+        let newUpdatedItem = {type: match.type, quantity: productQty, price: match.price, img: match.img, slug: match.slug}
+        let newUpdatedItemPriceByQty = (newUpdatedItem.price * newUpdatedItem.quantity)
+        let updatedItem = {type: match.type, quantity: productQty, price: match.price, img: match.img, slug: match.slug, totalItemPrice: newUpdatedItemPriceByQty}
+
+        const newCartItem = {type: productData.title, quantity: 1, price: productData.price, img: productData.image, slug: productData.slug}
+        const itemPriceByQty = (newCartItem.price * newCartItem.quantity)
+        let newItem = {type:productData.title, quantity: productQty, price: productData.price, img: productData.image, slug: productData.slug, totalItemPrice: itemPriceByQty}
 
         if(existingItem){
             await fetch(`http://localhost:5000/cart/${existingItem.id}`, {
@@ -83,7 +88,7 @@ export default function ProductScreen() {
             
             <div className='w-4/6 h-14 flex items-center justify-end'>
 
-            {(message !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{message}</span>}
+                {(message !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{message}</span>}
 
             </div>
 
@@ -117,14 +122,6 @@ export default function ProductScreen() {
                                 <li className='w-full xl:5/6 2xl:w-1/2 text-base md:text-lg xl:text-xl font-semibold'>Description: {productData.description}</li>
                             </ul>
                         </div>
-
-                        {/*<div>{cart.length > 1 && cart.map((productItem, index) => (
-                            <div key={index}>
-                                <span>{(productItem?.type !== '') ? productItem?.type : ''}25</span>
-                                <span>{productItem?.quantity > 0 ? productItem?.quantity : ''}30</span>
-                            </div>
-                            ))}
-                        </div>*/}
                     </div>
 
                     
