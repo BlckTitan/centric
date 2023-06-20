@@ -37,6 +37,18 @@ div.pricing{
 div.pricing > div{
   @apply font-semibold w-full md:w-1/2 flex items-center justify-between;
 }
+div.pricing > div.checkout{
+  @apply flex justify-end items-center mt-4;
+}
 div.pricing > div > span.price{
   @apply text-gray-500;
+}
+form.loginForm{
+  @apply bg-white py-5 px-10;
+}
+form.loginForm input, select, textarea{
+  @apply rounded border p-2 outline-none ring-indigo-800 focus:ring xl:text-lg;
+}
+form.loginForm label{
+  @apply text-lg font-semibold mb-2;
 }

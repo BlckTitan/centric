@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdHighlightOff } from "react-icons/md";
 import { displayMessage } from '@/slices/promptSlice';
+import { useRouter } from 'next/router';
 
 
 
@@ -14,7 +15,9 @@ export default function CartScreen() {
     let vat = 0.00;
     const [subTotalPrice, setSubTotalPrice] = useState(0.00)
     const [totalPrice, setTotalPrice] = useState(0.00)
+
     const dispatch = useDispatch()
+    const router = useRouter()
 
     const message = useSelector((state) => state.promptMessage.value);
 
@@ -141,6 +144,12 @@ export default function CartScreen() {
                         <div>
                             <span>Total</span>
                             <span className='price'>${totalPrice.toFixed(2)}</span>
+                        </div>
+                        <div className='checkout'>
+                            <button 
+                                className='primary-button'
+                                onClick={() => router.push('login?redirect=/shipping')}
+                            >Checkout</button>
                         </div>
                     </div>
 
