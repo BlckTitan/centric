@@ -1,10 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 export default function TopNav() {
   
   const cart = useSelector((state) => state.cart.value)
+  const{ status, data: session } = useSession()
+  const router = useRouter()
+  const { redirect } = router.query;
+
+  useEffect(() => {
+    if(session?.user){
+      router.push(redirect || '/')
+    }
+  }, [router, session, redirect])
 
   return (
     <>
@@ -23,9 +35,13 @@ export default function TopNav() {
                       }
                     </span>
                 </Link>
-                <Link href='/login'>
-                    <span>Login</span>
-                </Link>
+                  {
+                    status === 'loading' ? ('Loading') : session?.user ?
+                    (session.user.name) : ( 
+                      <Link href='/login'>
+                          <span>Login</span>
+                      </Link>
+                  )}
             </div>
         </nav>
     </>
