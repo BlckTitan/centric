@@ -32,7 +32,7 @@ export default function CartScreen() {
     }
 
     const removeItemHandler = async (item) =>{
-        const existingItem = cart?.find((deleteItem) => deleteItem.type = item)
+        const existingItem = cart?.find((deleteItem) => deleteItem.id = item)
         
         await fetch(`http://localhost:5000/cart/${existingItem.id}`, {
             method: 'DELETE',
@@ -121,7 +121,7 @@ export default function CartScreen() {
                                         </td>
 
                                         <td className='p-5 text-center'>
-                                            <button onClick={() => removeItemHandler(item.type)} style={{color: 'red', fontSize: '1.9rem'}}>
+                                            <button onClick={() => removeItemHandler(item.id)} style={{color: 'red', fontSize: '1.9rem'}}>
                                                 <MdHighlightOff/>
                                             </button>
                                         </td>
