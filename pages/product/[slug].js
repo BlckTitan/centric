@@ -7,6 +7,7 @@ import data from '../../data.json';
 import Link from 'next/link';
 import { cartItem } from '@/slices/cartSlice';
 import { displayMessage } from '@/slices/promptSlice';
+import { createCartData, updateCartData } from '@/utils/queryFunc';
 
 export default function ProductScreen() {
     const message = useSelector((state) => state.promptMessage.value)
@@ -44,19 +45,10 @@ export default function ProductScreen() {
         let newItem = {type:productData.title, quantity: productQty, price: productData.price, img: productData.image, slug: productData.slug, totalItemPrice: itemPriceByQty}
 
         if(existingItem){
-            await fetch(`http://localhost:5000/cart/${existingItem.id}`, {
-                method: 'PUT',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify(updatedItem)
-            })
+            updateCartData(existingItem.id, updatedItem)
             dispatch(displayMessage('Item updated successfully!'))
         }else{
-            await fetch('http://localhost:5000/cart', {
-                method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(newItem)
-            })
-            
+            createCartData(newItem)
             dispatch(displayMessage('Item added successfully!'))
         }
         getAllCartData()

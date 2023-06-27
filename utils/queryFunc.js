@@ -3,6 +3,20 @@ const getAllCartData = async () =>{
     const res = await req.json()
     return res
 }
+const createCartData = async (newItem) =>{
+    await fetch('http://localhost:5000/cart', {
+        method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(newItem)
+    })
+}
+const updateCartData = async (existingItem, updatedItem) =>{
+    await fetch(`http://localhost:5000/cart/${existingItem}`, {
+                method: 'PUT',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify(updatedItem)
+            })
+}
 const deleteAllCartData = async (existingItem) =>{
     await fetch(`http://localhost:5000/cart/${existingItem}`, {
         method: 'DELETE',
@@ -10,4 +24,4 @@ const deleteAllCartData = async (existingItem) =>{
     })
 }
 
-export { getAllCartData, deleteAllCartData }
+export { getAllCartData, deleteAllCartData, createCartData, updateCartData }

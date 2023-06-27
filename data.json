@@ -8,6 +8,24 @@
       "slug": "Wedding",
       "totalItemPrice": 9.99,
       "id": 7
+    },
+    {
+      "type": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+      "quantity": "6",
+      "price": 109.95,
+      "img": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+      "slug": "Laptops",
+      "totalItemPrice": 659.7,
+      "id": 8
+    },
+    {
+      "type": "Mens Casual Premium Slim Fit T-Shirts ",
+      "quantity": "10",
+      "price": 22.3,
+      "img": "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
+      "slug": "Free-shirt",
+      "totalItemPrice": 223,
+      "id": 9
     }
   ],
   "products": [
