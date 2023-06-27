@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MdHighlightOff } from "react-icons/md";
 import { displayMessage } from '@/slices/promptSlice';
 import { useRouter } from 'next/router';
+import { getAllCartData, deleteAllCartData } from '@/utils/queryFunc';
 
 
 
@@ -21,10 +22,9 @@ export default function CartScreen() {
 
     const message = useSelector((state) => state.promptMessage.value);
 
-    const getAllCartData = async () =>{
-        const req = await fetch('http://localhost:5000/cart')
-        const res = await req.json()
-
+    const fetchCart = async () =>{
+        
+        const res = await getAllCartData()
         if(!res) return <div>Loading...</div>
         setCart(res)
         dispatch(cartItem(res?.length))
@@ -34,12 +34,8 @@ export default function CartScreen() {
     const removeItemHandler = async (item) =>{
         const existingItem = cart?.find((deleteItem) => deleteItem.id = item)
         
-        await fetch(`http://localhost:5000/cart/${existingItem.id}`, {
-            method: 'DELETE',
-            headers: {'Content-Type':'application/json'},
-        })
-
-        getAllCartData()
+        deleteAllCartData(existingItem.id)
+        fetchCart()
         dispatch(cartItem(cart?.length))
         dispatch(displayMessage('Item deleted successfully!!!'))
     }
@@ -56,7 +52,7 @@ export default function CartScreen() {
     }
 
     useEffect(() => {
-        getAllCartData()
+        fetchCart()
         dispatch(cartItem(cart?.length))
 
         setTimeout(() =>{
@@ -97,7 +93,7 @@ export default function CartScreen() {
                                         <td className='py-2'>
                                             <Link href={`/product/${item.slug}`} className='flex'>
                                                 <img
-                                                    className='w-24 xl:w-48 h-10 xl:h-24 object-contain bg-red-500'
+                                                    className='w-24 xl:w-48 h-10 xl:h-24 object-contain bg-red-500 xl:bg-transparent'
                                                     src={item.img}
                                                     alt={item.type}
                                                 />
