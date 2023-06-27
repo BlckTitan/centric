@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { toast } from 'react-toastify';
+import DropDown from '../DropDown';
 
 export default function TopNav() {
   
@@ -14,9 +14,10 @@ export default function TopNav() {
 
   useEffect(() => {
     if(session?.user){
-      router.push(redirect || '/')
+      console.log(1)
+      //router.push(redirect || '/')
     }
-  }, [router, session, redirect])
+  }, [router, session, redirect]);
 
   return (
     <>
@@ -37,7 +38,7 @@ export default function TopNav() {
                 </Link>
                   {
                     status === 'loading' ? ('Loading') : session?.user ?
-                    (session.user.name) : ( 
+                    <DropDown username={session.user.name} /> : ( 
                       <Link href='/login'>
                           <span>Login</span>
                       </Link>
