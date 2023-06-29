@@ -2,12 +2,12 @@ import Layout from '@/components/Layout';
 import CheckoutWizard from '@/components/checkoutWizard/CheckoutWizard';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getShipping } from '@/slices/formSlice';
 import Cookies from 'js-cookie';
 
 export default function Shipping() {
-    // const shippingData = useSelector((state) => state.shippingForm.shipping)
+    
     const dispatch = useDispatch()
 
     const {
@@ -104,3 +104,4 @@ export default function Shipping() {
     </Layout>
   )
 }
+Shipping.auth = true;
