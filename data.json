@@ -1,31 +1,40 @@
 {
   "cart": [
     {
-      "type": "White Gold Plated Princess",
+      "type": "Lock and Love Women's Removable Hooded Faux Leather Moto Biker Jacket",
       "quantity": 1,
-      "price": 9.99,
-      "img": "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg",
-      "slug": "Wedding",
-      "totalItemPrice": 9.99,
-      "id": 7
+      "price": 29.95,
+      "img": "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg",
+      "slug": "Jacket",
+      "totalItemPrice": 29.95,
+      "id": 9
     },
     {
       "type": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-      "quantity": "6",
+      "quantity": 1,
       "price": 109.95,
       "img": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
       "slug": "Laptops",
-      "totalItemPrice": 659.7,
-      "id": 8
+      "totalItemPrice": 109.95,
+      "id": 10
     },
     {
       "type": "Mens Casual Premium Slim Fit T-Shirts ",
-      "quantity": "10",
+      "quantity": 1,
       "price": 22.3,
       "img": "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
       "slug": "Free-shirt",
-      "totalItemPrice": 223,
-      "id": 9
+      "totalItemPrice": 22.3,
+      "id": 11
+    },
+    {
+      "type": "Mens Cotton Jacket",
+      "quantity": 1,
+      "price": 55.99,
+      "img": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
+      "slug": "Winter-Jacket",
+      "totalItemPrice": 55.99,
+      "id": 12
     }
   ],
   "products": [

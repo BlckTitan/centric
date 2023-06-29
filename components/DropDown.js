@@ -3,9 +3,11 @@ import Cookies from 'js-cookie'
 import { Menu } from '@headlessui/react'
 import DropdownLink from './DropdownLink';
 import { signOut } from 'next-auth/react';
+// import { deleteAllCartData } from '@/utils/queryFunc';
 
 export default function DropDown(props) {
     const logoutHandler = () => {
+        // deleteAllCartData()
         Cookies.remove('cart')
         signOut({callbackUrl: '/'})
     }

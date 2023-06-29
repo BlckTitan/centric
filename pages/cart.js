@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MdHighlightOff } from "react-icons/md";
 import { displayMessage } from '@/slices/promptSlice';
 import { useRouter } from 'next/router';
-import { getAllCartData, deleteAllCartData } from '@/utils/queryFunc';
+import { getAllCartData, deleteOneCartData } from '@/utils/queryFunc';
 
 
 
@@ -34,7 +34,7 @@ export default function CartScreen() {
     const removeItemHandler = async (item) =>{
         const existingItem = cart?.find((deleteItem) => deleteItem.id = item)
         
-        deleteAllCartData(existingItem.id)
+        deleteOneCartData(existingItem.id)
         fetchCart()
         dispatch(cartItem(cart?.length))
         dispatch(displayMessage('Item deleted successfully!!!'))
