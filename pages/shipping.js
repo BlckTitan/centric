@@ -1,13 +1,13 @@
 import Layout from '@/components/Layout';
 import CheckoutWizard from '@/components/checkoutWizard/CheckoutWizard';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getShipping } from '@/slices/formSlice';
 import Cookies from 'js-cookie';
 
 export default function Shipping() {
-    const data = useSelector((state) => state.shippingForm.shipping)
+    // const shippingData = useSelector((state) => state.shippingForm.shipping)
     const dispatch = useDispatch()
 
     const {
@@ -15,11 +15,28 @@ export default function Shipping() {
         register,
         formState: { errors },
         setValue,
-        getValues
     } = useForm();
 
+    useEffect(() => {
+        
+        let cookieData = Cookies.get('shipping')
+        if(cookieData) {
+            let shippingcookieData = JSON.parse(cookieData)
+            let shippingData = shippingcookieData.shippingAddress
+
+            setValue('fullName', shippingData.fullName),
+            setValue('address', shippingData.address),
+            setValue('city', shippingData.city),
+            setValue('postalCode', shippingData.postalCode),
+            setValue('country', shippingData.country)
+        }
+    }, [setValue])
+
+
     const submitHandler = ({fullName, address, city, postalCode, country}) => {
+
         dispatch(getShipping({fullName, address, city, postalCode, country}))
+
         Cookies.set('shipping',
         JSON.stringify({
             shippingAddress: {
@@ -32,6 +49,8 @@ export default function Shipping() {
             }
         }))
     }
+    
+
   return (
     <Layout title={'Shipping'}>
 

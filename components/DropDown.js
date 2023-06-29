@@ -7,6 +7,7 @@ import { signOut } from 'next-auth/react';
 
 export default function DropDown(props) {
     const logoutHandler = () => {
+        Cookies.remove('shipping')
         // deleteAllCartData()
         Cookies.remove('cart')
         signOut({callbackUrl: '/'})
