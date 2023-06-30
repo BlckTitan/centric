@@ -5,10 +5,12 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { getShipping } from '@/slices/formSlice';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 
 export default function Shipping() {
     
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const router = useRouter()
 
     const {
         handleSubmit,
@@ -54,7 +56,7 @@ export default function Shipping() {
   return (
     <Layout title={'Shipping'}>
 
-        <div className='w-full flex flex-col bg-white py-4'>
+        <div className='w-full flex flex-col bg-white py-4 px-5'>
 
             <CheckoutWizard activePanel={1}/>
             <form className=' w-full flex justify-center' onSubmit={handleSubmit(submitHandler)}>
@@ -95,7 +97,7 @@ export default function Shipping() {
                     </div>
 
                     <div className='mb-4 flex justify-center'>
-                        <button className='primary-button md:px-20 md:py-3 md:text-xl'>Next</button>
+                        <button className='primary-button md:px-20 md:py-3 md:text-xl' onClick={() => router.push('/payment')}>Next</button>
                     </div>
                 </div>
             </form>

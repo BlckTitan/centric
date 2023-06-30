@@ -29,7 +29,10 @@ body {
   @apply mb-5 block rounded-lg border border-gray-200 shadow-md;
 }
 .primary-button{
-  @apply rounded text-white bg-indigo-400 py-2 px-4 shadow outline-none hover:bg-indigo-500 active:bg-indigo-500;
+  @apply rounded text-white font-semibold  bg-indigo-400 py-2 px-4 shadow outline-none hover:bg-indigo-500 active:bg-indigo-500;
+}
+.default-button{
+  @apply rounded text-black font-semibold  bg-gray-300 py-2 px-4 shadow outline-none hover:bg-indigo-500 active:bg-indigo-500;
 }
 div.pricing{
   @apply text-base font-normal p-1;

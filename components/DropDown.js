@@ -1,16 +1,17 @@
 import React from 'react';
-import Cookies from 'js-cookie'
-import { Menu } from '@headlessui/react'
+import Cookies from 'js-cookie';
+import { Menu } from '@headlessui/react';
 import DropdownLink from './DropdownLink';
 import { signOut } from 'next-auth/react';
-// import { deleteAllCartData } from '@/utils/queryFunc';
+import { deleteAllCartData } from '@/utils/queryFunc';
 
 export default function DropDown(props) {
     const logoutHandler = () => {
-        Cookies.remove('shipping')
-        // deleteAllCartData()
-        Cookies.remove('cart')
-        signOut({callbackUrl: '/'})
+        Cookies.remove('shipping');
+        deleteAllCartData();
+        Cookies.remove('cart');
+        Cookies.remove('user-payment-method');
+        signOut({callbackUrl: '/'});
     }
   return (
     <>
@@ -24,6 +25,7 @@ export default function DropDown(props) {
                 <Menu.Item>
                     <DropdownLink className='dropdown-link'>Profile</DropdownLink>
                 </Menu.Item>
+
                 <Menu.Item>
                     <DropdownLink className='dropdown-link'>Order History</DropdownLink>
                 </Menu.Item>

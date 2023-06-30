@@ -12,10 +12,10 @@ const createCartData = async (newItem) =>{
 }
 const updateCartData = async (existingItem, updatedItem) =>{
     await fetch(`http://localhost:5000/cart/${existingItem}`, {
-                method: 'PUT',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify(updatedItem)
-            })
+        method: 'PUT',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(updatedItem)
+    })
 }
 const deleteOneCartData = async (existingItem) =>{
     await fetch(`http://localhost:5000/cart/${existingItem}`, {
@@ -25,10 +25,9 @@ const deleteOneCartData = async (existingItem) =>{
 }
 const deleteAllCartData = async () =>{
     
-    await fetch('http://localhost:5000/cart', {
-        method: 'POST',
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify([])
+    await fetch('http://localhost:5000/cart/', {
+        method: 'DELETE',
+        headers: {'Content-Type':'application/json'},
     })
 }
 
