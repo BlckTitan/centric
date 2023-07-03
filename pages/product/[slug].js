@@ -19,7 +19,7 @@ export default function ProductScreen() {
     const {slug} = query;
 
     const productData = data.products.find((item) => item.slug === slug);
-    let existingItem = cartData?.find((item) => item?.type === productData?.title)
+    let existingItem = cartData?.find((item) => item?.type === productData?.name)
     let match = (typeof existingItem === 'undefined') ? 0 : existingItem;
 
     
@@ -42,7 +42,7 @@ export default function ProductScreen() {
 
         const newCartItem = {type: productData.title, quantity: 1, price: productData.price, img: productData.image, slug: productData.slug}
         const itemPriceByQty = (newCartItem.price * newCartItem.quantity)
-        let newItem = {type:productData.title, quantity: productQty, price: productData.price, img: productData.image, slug: productData.slug, totalItemPrice: itemPriceByQty}
+        let newItem = {type:productData.name, quantity: productQty, price: productData.price, img: productData.image, slug: productData.slug, totalItemPrice: itemPriceByQty}
 
         if(existingItem){
             updateCartData(existingItem.id, updatedItem)
@@ -75,7 +75,7 @@ export default function ProductScreen() {
     if(!productData) return <p>Product not found!!!</p>
 
   return (
-    <Layout title={productData.title}>
+    <Layout title={productData.name}>
         <div className='py-2 w-full flex flex-col items-center'>
             
             <div className='w-4/6 h-14 flex items-center justify-end'>
@@ -106,11 +106,11 @@ export default function ProductScreen() {
                         <div>
                             <ul>
                                 <li className='my-4'>
-                                    <h1 className='text-base md:text-lg xl:text-xl font-bold'>{productData.title}</h1>
+                                    <h1 className='text-base md:text-lg xl:text-xl font-bold'>{productData.name}</h1>
                                 </li>
                                 <li className='my-2 text-base md:text-lg xl:text-xl'>Category: {productData.category}</li>
                                 <li className='my-2 text-base md:text-lg xl:text-xl'>Brand: {productData.brand}</li>
-                                <li className='my-2 text-base md:text-lg xl:text-xl'>{productData.rating.rate} of {productData.rating.count} reviews</li>
+                                <li className='my-2 text-base md:text-lg xl:text-xl'>{productData.rating} of {productData.ratingCount} reviews</li>
                                 <li className='w-full xl:5/6 2xl:w-1/2 text-base md:text-lg xl:text-xl font-semibold'>Description: {productData.description}</li>
                             </ul>
                         </div>

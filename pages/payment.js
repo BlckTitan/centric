@@ -54,7 +54,7 @@ export default function Payment() {
             setSelectedPaymentMethod(paymentCookie || '')
         }
 
-    }, [router, shippingCookieData, paymentMthd])
+    }, [router, shippingCookieData, paymentMthd, paymentCookieData])
 
   return (
     <Layout title='Payment'>

@@ -31,9 +31,9 @@ export default function ProductItem({product}) {
     }
 
     const addToCartHandler = () => {
-        const newItem = {type: product.title, quantity: 1, price: product.price, img: product.image, slug: product.slug}
+        const newItem = {type: product.name, quantity: 1, price: product.price, img: product.image, slug: product.slug}
         const itemPriceByQty = (newItem.price * newItem.quantity)
-        const selectedItem = {type: product.title, quantity: 1, price: product.price, img: product.image, slug:product.slug, totalItemPrice: itemPriceByQty}
+        const selectedItem = {type: product.name, quantity: 1, price: product.price, img: product.image, slug:product.slug, totalItemPrice: itemPriceByQty}
         const existingItem = cart?.find((item) => item?.type === selectedItem?.type)
 
         if(existingItem) {
@@ -70,7 +70,7 @@ export default function ProductItem({product}) {
         <div className='w-full h-1/2 flex flex-col items-center justify-between px-5 py-2 md:px-5 md:py-5 text-left bg-indigo-950 rounded-b-md'>
             <div className='w-full h-14 text-ellipsis'>
                 <Link href={`/product/${product.slug}`}>
-                    <h2 className='text-base xl:text-lg text-white text-left font-bold'>{product.title}</h2>
+                    <h2 className='text-base xl:text-lg text-white text-left font-bold'>{product.name}</h2>
                 </Link>
             </div>
 
