@@ -30,5 +30,4 @@ const deleteAllCartData = async () =>{
         headers: {'Content-Type':'application/json'},
     })
 }
-
 export { getAllCartData, deleteOneCartData, deleteAllCartData, createCartData, updateCartData }

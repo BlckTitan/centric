@@ -4,18 +4,24 @@ import { cartItem } from '@/slices/cartSlice';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function Home({productData, cartData}) {
+export default function Home({cartData}) {
 
   const message = useSelector((state) => state.promptMessage.value)
   const dispatch = useDispatch()
   const [products, setProducts] = useState()
 
-  useEffect(() => {
-    setProducts(productData)
+  const getAllProducts = async () => {
+    const req = await fetch('/api/product')
+    const res = await req.json()
+    
+    setProducts(res)
+  }
 
+  useEffect(() => {
+    getAllProducts()
     dispatch(cartItem(cartData.length))
 
-  }, [products, productData])
+  }, [dispatch, cartData.length])
 
   if(!products) return <div>Loading...</div>
   
@@ -40,15 +46,12 @@ export default function Home({productData, cartData}) {
 }
 
 export async function getStaticProps(){
-  const req = await fetch('http://localhost:5000/products')
-  const res = await req.json()
 
   const cartReq = await fetch('http://localhost:5000/cart')
   const cartRes = await cartReq.json()
 
   return {
     props: { 
-      productData: res,
       cartData: cartRes
     }
   }
