@@ -2,24 +2,26 @@
 import Layout from '@/components/Layout'
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import data from '../../data.json';
+// import { useRouter } from 'next/router';
+// import data from '../../data.json';
 import Link from 'next/link';
 import { cartItem } from '@/slices/cartSlice';
 import { displayMessage } from '@/slices/promptSlice';
 import { createCartData, updateCartData } from '@/utils/queryFunc';
+import db from '@/utils/db';
+import Product from '@/models/Product';
 
-export default function ProductScreen() {
+export default function ProductScreen(prodtData) {
     const message = useSelector((state) => state.promptMessage.value)
-
+    const PRODUCT_DATA = prodtData.prodtData;
     const [cartData, setCartData] = useState()
 
     const dispatch = useDispatch()
-    const {query} = useRouter();
-    const {slug} = query;
+    // const {query} = useRouter();
+    // const {slug} = query;
 
-    const productData = data.products.find((item) => item.slug === slug);
-    let existingItem = cartData?.find((item) => item?.type === productData?.name)
+    // const productData = data.products.find((item) => item.slug === slug);
+    let existingItem = cartData?.find((item) => item?.type === prodtData?.name)
     let match = (typeof existingItem === 'undefined') ? 0 : existingItem;
 
     
@@ -40,9 +42,9 @@ export default function ProductScreen() {
         let newUpdatedItemPriceByQty = (newUpdatedItem.price * newUpdatedItem.quantity)
         let updatedItem = {type: match.type, quantity: productQty, price: match.price, img: match.img, slug: match.slug, totalItemPrice: newUpdatedItemPriceByQty}
 
-        const newCartItem = {type: productData.title, quantity: 1, price: productData.price, img: productData.image, slug: productData.slug}
+        const newCartItem = {type: PRODUCT_DATA.title, quantity: 1, price: PRODUCT_DATA.price, img: PRODUCT_DATA.image, slug: PRODUCT_DATA.slug}
         const itemPriceByQty = (newCartItem.price * newCartItem.quantity)
-        let newItem = {type:productData.name, quantity: productQty, price: productData.price, img: productData.image, slug: productData.slug, totalItemPrice: itemPriceByQty}
+        let newItem = {type:PRODUCT_DATA.name, quantity: productQty, price: PRODUCT_DATA.price, img: PRODUCT_DATA.image, slug: PRODUCT_DATA.slug, totalItemPrice: itemPriceByQty}
 
         if(existingItem){
             updateCartData(existingItem.id, updatedItem)
@@ -72,10 +74,10 @@ export default function ProductScreen() {
 
     }, [message])
 
-    if(!productData) return <p>Product not found!!!</p>
+    if(!PRODUCT_DATA) return <p>Product not found!!!</p>
 
   return (
-    <Layout title={productData.name}>
+    <Layout title={PRODUCT_DATA.name}>
         <div className='py-2 w-full flex flex-col items-center'>
             
             <div className='w-4/6 h-14 flex items-center justify-end'>
@@ -96,8 +98,8 @@ export default function ProductScreen() {
                     <div className='xl:col-span-2'>
                         <div className='w-full h-fit bg-white flex justify-center'>
                             <img
-                                src={productData.image}
-                                alt={productData.description}
+                                src={PRODUCT_DATA.image}
+                                alt={PRODUCT_DATA.description}
                                 className='w-96 h-fit rounded-md mb-4 object-cover hover:scale-105'
                             />
 
@@ -106,12 +108,12 @@ export default function ProductScreen() {
                         <div>
                             <ul>
                                 <li className='my-4'>
-                                    <h1 className='text-base md:text-lg xl:text-xl font-bold'>{productData.name}</h1>
+                                    <h1 className='text-base md:text-lg xl:text-xl font-bold'>{PRODUCT_DATA.name}</h1>
                                 </li>
-                                <li className='my-2 text-base md:text-lg xl:text-xl'>Category: {productData.category}</li>
-                                <li className='my-2 text-base md:text-lg xl:text-xl'>Brand: {productData.brand}</li>
-                                <li className='my-2 text-base md:text-lg xl:text-xl'>{productData.rating} of {productData.ratingCount} reviews</li>
-                                <li className='w-full xl:5/6 2xl:w-1/2 text-base md:text-lg xl:text-xl font-semibold'>Description: {productData.description}</li>
+                                <li className='my-2 text-base md:text-lg xl:text-xl'>Category: {PRODUCT_DATA.category}</li>
+                                <li className='my-2 text-base md:text-lg xl:text-xl'>Brand: {PRODUCT_DATA.brand}</li>
+                                <li className='my-2 text-base md:text-lg xl:text-xl'>{PRODUCT_DATA.rating} of {PRODUCT_DATA.ratingCount} reviews</li>
+                                <li className='w-full xl:5/6 2xl:w-1/2 text-base md:text-lg xl:text-xl font-semibold'>Description: {PRODUCT_DATA.description}</li>
                             </ul>
                         </div>
                     </div>
@@ -121,11 +123,11 @@ export default function ProductScreen() {
                     <div className='card h-fit p-5 xl:col-span-1 mt-8 xl:mt-0'>
                         <div className='mb-2 flex justify-between'> 
                             <span>Price</span>
-                            <span>{productData.price}</span>
+                            <span>{PRODUCT_DATA.price}</span>
                         </div>
                         <div className='mb-2 flex justify-between'>
                             <span>Status</span>
-                            <span>{productData.stockCount > 0 ? 'In Stock': 'Unavailable'}</span>
+                            <span>{PRODUCT_DATA.stockCount > 0 ? 'In Stock': 'Unavailable'}</span>
                         </div>
                         
                         <div className='w-full flex justify-between items-center py-2'>
@@ -151,4 +153,48 @@ export default function ProductScreen() {
         </div>
     </Layout>
   )
+}
+
+export async function getStaticPaths(){
+
+     /*await db.connect()
+        const dbProducts = await Product.find().lean();
+
+        const PRODUCTS = dbProducts.map(db.convertDocToObj)
+
+        console.log(PRODUCTS.slug)*/
+        // const PATHS = PRODUCTS.map(productID => {
+        //     return {
+        //         params: [
+        //             {
+        //                 params: { slug: `${productID.slug}`},
+        //             }
+        //         ],
+
+        //     }
+        // })
+
+    return {
+        paths: [
+            {
+                params: { slug: 'Laptops'},
+            }
+        ],
+        fallback: false
+    }
+}
+
+export async function getStaticProps(context){
+    const { params } = context;
+    const { slug } = params;
+    
+    await db.connect()
+    const products = await Product.findOne({ slug }).lean();
+    await db.disconnect();
+  
+    return {
+      props: { 
+        PRODUCT_DATA: products ? db.convertDocToObj(products) : null
+      }
+    }
 }

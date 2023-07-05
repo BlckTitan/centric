@@ -35,6 +35,15 @@
       "slug": "Utensils",
       "totalItemPrice": 10.99,
       "id": 14
+    },
+    {
+      "type": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+      "quantity": "2",
+      "price": 109.95,
+      "img": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+      "slug": "Laptops",
+      "totalItemPrice": 109.95,
+      "id": 15
     }
   ]
 }
