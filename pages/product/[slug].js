@@ -2,8 +2,6 @@
 import Layout from '@/components/Layout'
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useRouter } from 'next/router';
-// import data from '../../data.json';
 import Link from 'next/link';
 import { cartItem } from '@/slices/cartSlice';
 import { displayMessage } from '@/slices/promptSlice';
@@ -12,20 +10,16 @@ import db from '@/utils/db';
 import Product from '@/models/Product';
 
 export default function ProductScreen(prodtData) {
-    const message = useSelector((state) => state.promptMessage.value)
+    const MESSAGE = useSelector((state) => state.promptMessage.value)
     const PRODUCT_DATA = prodtData.prodtData;
     const [cartData, setCartData] = useState()
 
     const dispatch = useDispatch()
-    // const {query} = useRouter();
-    // const {slug} = query;
-
-    // const productData = data.products.find((item) => item.slug === slug);
     let existingItem = cartData?.find((item) => item?.type === prodtData?.name)
-    let match = (typeof existingItem === 'undefined') ? 0 : existingItem;
+    let MATCH = (typeof existingItem === 'undefined') ? 0 : existingItem;
 
     
-    const [productQty, setProductQty] = useState(0 || match.quantity)
+    const [productQty, setProductQty] = useState(0 || MATCH.quantity)
 
     const getAllCartData = async () =>{
 
@@ -38,9 +32,9 @@ export default function ProductScreen(prodtData) {
     }
     
     const addToCartHandler = async () => {
-        let newUpdatedItem = {type: match.type, quantity: productQty, price: match.price, img: match.img, slug: match.slug}
+        let newUpdatedItem = {type: MATCH.type, quantity: productQty, price: MATCH.price, img: MATCH.img, slug: MATCH.slug}
         let newUpdatedItemPriceByQty = (newUpdatedItem.price * newUpdatedItem.quantity)
-        let updatedItem = {type: match.type, quantity: productQty, price: match.price, img: match.img, slug: match.slug, totalItemPrice: newUpdatedItemPriceByQty}
+        let updatedItem = {type: MATCH.type, quantity: productQty, price: MATCH.price, img: MATCH.img, slug: MATCH.slug, totalItemPrice: newUpdatedItemPriceByQty}
 
         const newCartItem = {type: PRODUCT_DATA.title, quantity: 1, price: PRODUCT_DATA.price, img: PRODUCT_DATA.image, slug: PRODUCT_DATA.slug}
         const itemPriceByQty = (newCartItem.price * newCartItem.quantity)
@@ -53,17 +47,16 @@ export default function ProductScreen(prodtData) {
             createCartData(newItem)
             dispatch(displayMessage('Item added successfully!'))
         }
-        getAllCartData()
-
+        getAllCartData();
     }
 
     useEffect(() => {
         getAllCartData()
 
-        if(match.quantity !== 0){
-            setProductQty(match.quantity);
-        }else if(match === 0){
-            setProductQty(match);
+        if(MATCH.quantity !== 0){
+            setProductQty(MATCH.quantity);
+        }else if(MATCH === 0){
+            setProductQty(MATCH);
         }else{
             setProductQty(productQty);
         }
@@ -72,7 +65,7 @@ export default function ProductScreen(prodtData) {
             dispatch(displayMessage(''))
         }, 5000)
 
-    }, [message])
+    }, [MESSAGE])
 
     if(!PRODUCT_DATA) return <p>Product not found!!!</p>
 
@@ -82,7 +75,7 @@ export default function ProductScreen(prodtData) {
             
             <div className='w-4/6 h-14 flex items-center justify-end'>
 
-                {(message !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{message}</span>}
+                {(MESSAGE !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{MESSAGE}</span>}
 
             </div>
 
@@ -137,7 +130,7 @@ export default function ProductScreen(prodtData) {
                                 <input 
                                     type='number'
                                     className='border-2 border-solid border-gray-200 w-16 text-lg px-2 text-center'
-                                    value={productQty || match.quantity}
+                                    value={productQty || MATCH.quantity}
                                     onChange={(e) => setProductQty(e.target.value)}
                                 />
                             </div>

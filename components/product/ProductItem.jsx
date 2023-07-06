@@ -9,7 +9,7 @@ import { cartItem } from '@/slices/cartSlice';
 export default function ProductItem({product}) {
     const [cart, setCart] = useState()
     const dispatch = useDispatch()
-    const message = useSelector((state) => state.promptMessage.value)
+    const MESSAGE = useSelector((state) => state.promptMessage.value)
 
     const getCartData = async () =>{
         const req = await fetch('http://localhost:5000/cart')
@@ -31,16 +31,16 @@ export default function ProductItem({product}) {
     }
 
     const addToCartHandler = () => {
-        const newItem = {type: product.name, quantity: 1, price: product.price, img: product.image, slug: product.slug}
-        const itemPriceByQty = (newItem.price * newItem.quantity)
-        const selectedItem = {type: product.name, quantity: 1, price: product.price, img: product.image, slug:product.slug, totalItemPrice: itemPriceByQty}
-        const existingItem = cart?.find((item) => item?.type === selectedItem?.type)
+        const NEW_ITEM = {type: product.name, quantity: 1, price: product.price, img: product.image, slug: product.slug}
+        const ITEM_PRICE_BY_QTY = (NEW_ITEM.price * NEW_ITEM.quantity)
+        const SELECTED_ITEM = {type: product.name, quantity: 1, price: product.price, img: product.image, slug:product.slug, totalItemPrice: ITEM_PRICE_BY_QTY}
+        const EXISTING_ITEM = cart?.find((item) => item?.type === SELECTED_ITEM?.type)
 
-        if(existingItem) {
+        if(EXISTING_ITEM) {
             dispatch(displayMessage('Item already added to cart'))
             return false
         }else{
-            storeCartData(selectedItem)
+            storeCartData(SELECTED_ITEM)
         }
     }
 
@@ -51,7 +51,7 @@ export default function ProductItem({product}) {
         setTimeout(() =>{
             dispatch(displayMessage(''))
         }, 5000)
-    }, [message])
+    }, [MESSAGE])
   return (
     <div className='card hover:scale-105 h-96'>
 
