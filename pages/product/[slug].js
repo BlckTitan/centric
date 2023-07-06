@@ -157,29 +157,21 @@ export default function ProductScreen(prodtData) {
 
 export async function getStaticPaths(){
 
-     /*await db.connect()
+        await db.connect()
         const dbProducts = await Product.find().lean();
 
-        const PRODUCTS = dbProducts.map(db.convertDocToObj)
+        const products = dbProducts.map(db.convertDocToObj)
 
-        console.log(PRODUCTS.slug)*/
-        // const PATHS = PRODUCTS.map(productID => {
-        //     return {
-        //         params: [
-        //             {
-        //                 params: { slug: `${productID.slug}`},
-        //             }
-        //         ],
-
-        //     }
-        // })
-
-    return {
-        paths: [
-            {
-                params: { slug: 'Laptops'},
+        const paths = products.map((productID) => {
+            return {
+                params: {
+                    slug: `${productID.slug}`
+                }
             }
-        ],
+        })
+    return {
+        
+        paths,
         fallback: false
     }
 }
@@ -194,7 +186,7 @@ export async function getStaticProps(context){
   
     return {
       props: { 
-        PRODUCT_DATA: products ? db.convertDocToObj(products) : null
+        prodtData: products ? db.convertDocToObj(products) : null
       }
     }
 }
