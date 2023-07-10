@@ -15,33 +15,45 @@ export default function ProductScreen(prodtData) {
     const [cartData, setCartData] = useState()
 
     const dispatch = useDispatch()
-    let existingItem = cartData?.find((item) => item?.type === prodtData?.name)
-    let MATCH = (typeof existingItem === 'undefined') ? 0 : existingItem;
+    let EXISTING_ITEM = cartData?.find((item) => item?.type === PRODUCT_DATA?.name)
+    let MATCH = (typeof EXISTING_ITEM === 'undefined') ? 0 : EXISTING_ITEM;
 
     
     const [productQty, setProductQty] = useState(0 || MATCH.quantity)
 
     const getAllCartData = async () =>{
 
-        const req = await fetch('http://localhost:5000/cart')
-        const res = await req.json()
+        const REQ = await fetch('http://localhost:5000/cart')
+        const RES = await REQ.json()
 
-        setCartData(res)
-        dispatch(cartItem(res.length))
+        setCartData(RES)
+        dispatch(cartItem(RES.length))
 
     }
-    
-    const addToCartHandler = async () => {
-        let newUpdatedItem = {type: MATCH.type, quantity: productQty, price: MATCH.price, img: MATCH.img, slug: MATCH.slug}
-        let newUpdatedItemPriceByQty = (newUpdatedItem.price * newUpdatedItem.quantity)
-        let updatedItem = {type: MATCH.type, quantity: productQty, price: MATCH.price, img: MATCH.img, slug: MATCH.slug, totalItemPrice: newUpdatedItemPriceByQty}
 
-        const newCartItem = {type: PRODUCT_DATA.title, quantity: 1, price: PRODUCT_DATA.price, img: PRODUCT_DATA.image, slug: PRODUCT_DATA.slug}
-        const itemPriceByQty = (newCartItem.price * newCartItem.quantity)
-        let newItem = {type:PRODUCT_DATA.name, quantity: productQty, price: PRODUCT_DATA.price, img: PRODUCT_DATA.image, slug: PRODUCT_DATA.slug, totalItemPrice: itemPriceByQty}
+    const verifyStock = () => {
 
-        if(existingItem){
-            updateCartData(existingItem.id, updatedItem)
+        if(productQty > PRODUCT_DATA.stockCount){
+            dispatch(displayMessage('Item exceeded stock quantity'))
+        }else if(productQty < 0){
+            dispatch(displayMessage('Invalid item quantity'))
+        }else{
+            let newUpdatedItem = {_id: PRODUCT_DATA._id, type: MATCH.type, quantity: productQty, price: MATCH.price, img: MATCH.img, slug: MATCH.slug}
+            let newUpdatedItemPriceByQty = (newUpdatedItem.price * newUpdatedItem.quantity)
+            let updatedItem = {_id: PRODUCT_DATA._id, type: MATCH.type, quantity: productQty, price: MATCH.price, img: MATCH.img, slug: MATCH.slug, totalItemPrice: newUpdatedItemPriceByQty}
+
+            const newCartItem = {_id: PRODUCT_DATA._id, type: PRODUCT_DATA.title, quantity: 1, price: PRODUCT_DATA.price, img: PRODUCT_DATA.image, slug: PRODUCT_DATA.slug}
+            const itemPriceByQty = (newCartItem.price * newCartItem.quantity)
+            let newItem = {_id: PRODUCT_DATA._id, type:PRODUCT_DATA.name, quantity: productQty, price: PRODUCT_DATA.price, img: PRODUCT_DATA.image, slug: PRODUCT_DATA.slug, totalItemPrice: itemPriceByQty}
+            return {updatedItem, newItem}
+        }
+    }
+
+    const addToCartHandler = () => {
+        const {updatedItem, newItem} = verifyStock();
+
+        if(EXISTING_ITEM){
+            updateCartData(EXISTING_ITEM.id, updatedItem)
             dispatch(displayMessage('Item updated successfully!'))
         }else{
             createCartData(newItem)
@@ -51,7 +63,7 @@ export default function ProductScreen(prodtData) {
     }
 
     useEffect(() => {
-        getAllCartData()
+        getAllCartData();
 
         if(MATCH.quantity !== 0){
             setProductQty(MATCH.quantity);

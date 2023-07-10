@@ -19,7 +19,6 @@ export default function Home({ prodtData, cartData}) {
   //   setProducts(res)
   // }
   useEffect(() => {
-    // getAllProducts()
     setProducts(prodtData)
     dispatch(cartItem(cartData.length))
 

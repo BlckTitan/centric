@@ -167,7 +167,7 @@ export const data = {
     {
         id: 12,
         name: "WD 4TB Gaming Drive Works with Playstation 4 Portable External Hard Drive",
-        slug: "Hard Drive",
+        slug: "SS Drive",
         brand: "WD",
         stockCount: 20,
         price: 114,

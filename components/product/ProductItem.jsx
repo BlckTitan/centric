@@ -31,9 +31,9 @@ export default function ProductItem({product}) {
     }
 
     const addToCartHandler = () => {
-        const NEW_ITEM = {type: product.name, quantity: 1, price: product.price, img: product.image, slug: product.slug}
+        const NEW_ITEM = {_id: product._id, type: product.name, quantity: 1, price: product.price, img: product.image, slug: product.slug}
         const ITEM_PRICE_BY_QTY = (NEW_ITEM.price * NEW_ITEM.quantity)
-        const SELECTED_ITEM = {type: product.name, quantity: 1, price: product.price, img: product.image, slug:product.slug, totalItemPrice: ITEM_PRICE_BY_QTY}
+        const SELECTED_ITEM = {_id: product._id, type: product.name, quantity: 1, price: product.price, img: product.image, slug:product.slug, totalItemPrice: ITEM_PRICE_BY_QTY}
         const EXISTING_ITEM = cart?.find((item) => item?.type === SELECTED_ITEM?.type)
 
         if(EXISTING_ITEM) {

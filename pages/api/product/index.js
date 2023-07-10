@@ -1,6 +1,5 @@
-import { productData } from "@/utils/productData";
-
+import { data } from "@/utils/centricData";
 
 export default function handler (req, res) {
-    res.status(200).json(productData.products)
+    res.status(200).json(data.products)
 }
