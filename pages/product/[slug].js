@@ -4,13 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { cartItem } from '@/slices/cartSlice';
-import { displayMessage } from '@/slices/promptSlice';
+import { displayErrorMessage, displaySuccessMessage } from '@/slices/promptSlice';
 import { createCartData, updateCartData } from '@/utils/queryFunc';
 import db from '@/utils/db';
 import Product from '@/models/Product';
 
 export default function ProductScreen(prodtData) {
-    const MESSAGE = useSelector((state) => state.promptMessage.value)
+    const MESSAGE = useSelector((state) => state.promptMessage)
     const PRODUCT_DATA = prodtData.prodtData;
     const [cartData, setCartData] = useState()
 
@@ -30,34 +30,48 @@ export default function ProductScreen(prodtData) {
         dispatch(cartItem(RES.length))
 
     }
+    console.log(MESSAGE.errorMessage, MESSAGE.successMessage)
 
     const verifyStock = () => {
 
         if(productQty > PRODUCT_DATA.stockCount){
-            dispatch(displayMessage('Item exceeded stock quantity'))
+            let updatedItem = '';
+            let newItem = '';
+            return dispatch(displayErrorMessage('Item exceeded stock quantity')),
+            {updatedItem, newItem};
         }else if(productQty < 0){
-            dispatch(displayMessage('Invalid item quantity'))
-        }else{
+            let updatedItem = '';
+            let newItem = '';
+            return dispatch(displayErrorMessage('Invalid item quantity')),
+            {updatedItem, newItem}
+        }else if(EXISTING_ITEM){
+            let newItem = '';
             let newUpdatedItem = {_id: PRODUCT_DATA._id, type: MATCH.type, quantity: productQty, price: MATCH.price, img: MATCH.img, slug: MATCH.slug}
             let newUpdatedItemPriceByQty = (newUpdatedItem.price * newUpdatedItem.quantity)
             let updatedItem = {_id: PRODUCT_DATA._id, type: MATCH.type, quantity: productQty, price: MATCH.price, img: MATCH.img, slug: MATCH.slug, totalItemPrice: newUpdatedItemPriceByQty}
-
+            return {updatedItem, newItem}
+            
+        }else{
+            let updatedItem = '';
             const newCartItem = {_id: PRODUCT_DATA._id, type: PRODUCT_DATA.title, quantity: 1, price: PRODUCT_DATA.price, img: PRODUCT_DATA.image, slug: PRODUCT_DATA.slug}
             const itemPriceByQty = (newCartItem.price * newCartItem.quantity)
             let newItem = {_id: PRODUCT_DATA._id, type:PRODUCT_DATA.name, quantity: productQty, price: PRODUCT_DATA.price, img: PRODUCT_DATA.image, slug: PRODUCT_DATA.slug, totalItemPrice: itemPriceByQty}
             return {updatedItem, newItem}
         }
+        
     }
 
     const addToCartHandler = () => {
-        const {updatedItem, newItem} = verifyStock();
+        const { updatedItem, newItem } = verifyStock();
 
-        if(EXISTING_ITEM){
+        if(EXISTING_ITEM && (updatedItem !== '')){
             updateCartData(EXISTING_ITEM.id, updatedItem)
-            dispatch(displayMessage('Item updated successfully!'))
-        }else{
+            dispatch(displaySuccessMessage('Item updated successfully!'));
+        }else if(newItem !== ''){
             createCartData(newItem)
-            dispatch(displayMessage('Item added successfully!'))
+            dispatch(displaySuccessMessage('Item added successfully!'));
+        }else{
+            dispatch(displaySuccessMessage('Item already updated'));
         }
         getAllCartData();
     }
@@ -74,10 +88,11 @@ export default function ProductScreen(prodtData) {
         }
 
         setTimeout(() =>{
-            dispatch(displayMessage(''))
+            dispatch(displayErrorMessage(''))
+            dispatch(displaySuccessMessage(''))
         }, 5000)
 
-    }, [MESSAGE])
+    }, [MESSAGE.errorMessage, MESSAGE.successMessage])
 
     if(!PRODUCT_DATA) return <p>Product not found!!!</p>
 
@@ -87,8 +102,8 @@ export default function ProductScreen(prodtData) {
             
             <div className='w-4/6 h-14 flex items-center justify-end'>
 
-                {(MESSAGE !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{MESSAGE}</span>}
-
+                {(MESSAGE.successMessage !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{MESSAGE.successMessage}</span>}
+                {(MESSAGE.errorMessage !== '') && <span className='py-2 px-4 bg-red-300 text-red-800 font-semibold rounded-sm'>{MESSAGE.errorMessage}</span>}
             </div>
 
             <div className='bg-white w-4/6 p-4 md:p-5 xl:p-10'>

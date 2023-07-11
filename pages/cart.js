@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdHighlightOff } from "react-icons/md";
-import { displayMessage } from '@/slices/promptSlice';
+import { displaySuccessMessage } from '@/slices/promptSlice';
 import { useRouter } from 'next/router';
 import { getAllCartData, deleteOneCartData } from '@/utils/queryFunc';
 
@@ -20,7 +20,7 @@ export default function CartScreen() {
     const dispatch = useDispatch()
     const router = useRouter()
 
-    const message = useSelector((state) => state.promptMessage.value);
+    const SUCCESS_MESSAGE = useSelector((state) => state.promptMessage.successMessage);
 
     const fetchCart = async () =>{
         
@@ -37,7 +37,7 @@ export default function CartScreen() {
         deleteOneCartData(existingItem.id)
         fetchCart()
         dispatch(cartItem(cart?.length))
-        dispatch(displayMessage('Item deleted successfully!!!'))
+        dispatch(displaySuccessMessage('Item deleted successfully!!!'))
     }
 
     const computeTotal = (res) =>{
@@ -56,10 +56,10 @@ export default function CartScreen() {
         dispatch(cartItem(cart?.length))
 
         setTimeout(() =>{
-            dispatch(displayMessage(''))
+            dispatch(displaySuccessMessage(''))
         }, 5000)
 
-    }, [message])
+    }, [SUCCESS_MESSAGE])
 
   return (
     <Layout title='Cart' >
@@ -67,7 +67,7 @@ export default function CartScreen() {
         <div className='w-full flex flex-col items-center'>
             <div className='w-5/6 h-16 flex items-center justify-between'>
                 <h1 className='font-semibold xl:text-xl'>Shopping Cart</h1>
-                {(message !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{message}</span>}
+                {(SUCCESS_MESSAGE !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{SUCCESS_MESSAGE}</span>}
             </div>
 
             <div className=' w-5/6 grid md:grid-cols-1 md:gap-5 justify-center bg-white rounded-md py-5 px-10'>

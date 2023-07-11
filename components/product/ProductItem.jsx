@@ -2,14 +2,14 @@
 //import Image from 'next/image'
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { displayMessage } from '@/slices/promptSlice';
+import { displaySuccessMessage } from '@/slices/promptSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { cartItem } from '@/slices/cartSlice';
 
 export default function ProductItem({product}) {
     const [cart, setCart] = useState()
     const dispatch = useDispatch()
-    const MESSAGE = useSelector((state) => state.promptMessage.value)
+    const MESSAGE = useSelector((state) => state.promptMessage.successMessage)
 
     const getCartData = async () =>{
         const req = await fetch('http://localhost:5000/cart')
@@ -18,7 +18,6 @@ export default function ProductItem({product}) {
         dispatch(cartItem(res.length))
         setCart(res)
     }
-
     const storeCartData = async (productOrder) =>{
         await fetch('http://localhost:5000/cart', {
             method: 'POST',
@@ -27,7 +26,7 @@ export default function ProductItem({product}) {
         })
 
         getCartData()
-        dispatch(displayMessage('Item added successfully!'))
+        dispatch(displaySuccessMessage('Item added successfully!'))
     }
 
     const addToCartHandler = () => {
@@ -37,7 +36,7 @@ export default function ProductItem({product}) {
         const EXISTING_ITEM = cart?.find((item) => item?.type === SELECTED_ITEM?.type)
 
         if(EXISTING_ITEM) {
-            dispatch(displayMessage('Item already added to cart'))
+            dispatch(displaySuccessMessage('Item already added to cart'))
             return false
         }else{
             storeCartData(SELECTED_ITEM)
@@ -49,7 +48,7 @@ export default function ProductItem({product}) {
         getCartData()
         
         setTimeout(() =>{
-            dispatch(displayMessage(''))
+            dispatch(displaySuccessMessage(''))
         }, 5000)
     }, [MESSAGE])
   return (

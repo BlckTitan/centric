@@ -8,22 +8,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 export default function Home({ prodtData, cartData}) {
 
-  const message = useSelector((state) => state.promptMessage.value)
+  const SUCCESS_MESSAGE = useSelector((state) => state.promptMessage.successMessage)
   const dispatch = useDispatch()
   const [products, setProducts] = useState()
 
-  // const getAllProducts = async () => {
-  //   const req = await fetch('/api/product')
-  //   const res = await req.json()
-    
-  //   setProducts(res)
-  // }
   useEffect(() => {
     setProducts(prodtData)
     dispatch(cartItem(cartData.length))
 
-  }, [dispatch, cartData.length])
-
+  }, [dispatch, cartData.length]);
+  
   if(!products) return <div>Loading...</div>
   
   return (
@@ -32,7 +26,7 @@ export default function Home({ prodtData, cartData}) {
         <div className='w-full h-14 flex items-center justify-between'>
           <div className='hidden'>search</div>
 
-          {(message !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{message}</span>}
+          {(SUCCESS_MESSAGE !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{SUCCESS_MESSAGE}</span>}
 
         </div>
 
