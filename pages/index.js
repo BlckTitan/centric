@@ -4,11 +4,10 @@ import Product from '@/models/Product';
 import { cartItem } from '@/slices/cartSlice';
 import db from '@/utils/db';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 export default function Home({ prodtData, cartData}) {
 
-  const SUCCESS_MESSAGE = useSelector((state) => state.promptMessage.successMessage)
   const dispatch = useDispatch()
   const [products, setProducts] = useState()
 
@@ -17,18 +16,11 @@ export default function Home({ prodtData, cartData}) {
     dispatch(cartItem(cartData.length))
 
   }, [dispatch, cartData.length]);
-  
+
   if(!products) return <div>Loading...</div>
   
   return (
       <Layout title="Homepage">
-
-        <div className='w-full h-14 flex items-center justify-between'>
-          <div className='hidden'>search</div>
-
-          {(SUCCESS_MESSAGE !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{SUCCESS_MESSAGE}</span>}
-
-        </div>
 
         <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 justify-center'>
           {products?.map((productData, index) => (

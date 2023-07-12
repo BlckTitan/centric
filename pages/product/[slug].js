@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { cartItem } from '@/slices/cartSlice';
-import { displayErrorMessage, displaySuccessMessage } from '@/slices/promptSlice';
+import { displaySuccessMessage } from '@/slices/promptSlice';
 import { createCartData, updateCartData } from '@/utils/queryFunc';
 import db from '@/utils/db';
 import Product from '@/models/Product';
+import { toast } from 'react-toastify';
 
 export default function ProductScreen(prodtData) {
     const MESSAGE = useSelector((state) => state.promptMessage)
@@ -37,13 +38,13 @@ export default function ProductScreen(prodtData) {
         if(productQty > PRODUCT_DATA.stockCount){
             let updatedItem = '';
             let newItem = '';
-            return dispatch(displayErrorMessage('Item exceeded stock quantity')),
-            {updatedItem, newItem};
+            toast.error('Item exceeded stock quantity');
+            return {updatedItem, newItem};
         }else if(productQty < 0){
             let updatedItem = '';
             let newItem = '';
-            return dispatch(displayErrorMessage('Invalid item quantity')),
-            {updatedItem, newItem}
+            toast.error('Invalid item quantity')
+            return {updatedItem, newItem}
         }else if(EXISTING_ITEM){
             let newItem = '';
             let newUpdatedItem = {_id: PRODUCT_DATA._id, type: MATCH.type, quantity: productQty, price: MATCH.price, img: MATCH.img, slug: MATCH.slug}
@@ -66,10 +67,10 @@ export default function ProductScreen(prodtData) {
 
         if(EXISTING_ITEM && updatedItem !== ''){
             updateCartData(EXISTING_ITEM.id, updatedItem)
-            dispatch(displaySuccessMessage('Item updated successfully!'));
+            toast.success('Item updated successfully!')
         }else if(newItem !== ''){
             createCartData(newItem)
-            dispatch(displaySuccessMessage('Item added successfully!'));
+            toast.success('Item added successfully!')
         }else{
             dispatch(displaySuccessMessage(''));
         }
@@ -87,12 +88,7 @@ export default function ProductScreen(prodtData) {
             setProductQty(productQty);
         }
 
-        setTimeout(() =>{
-            dispatch(displayErrorMessage(''))
-            dispatch(displaySuccessMessage(''))
-        }, 5000)
-
-    }, [MESSAGE.errorMessage, MESSAGE.successMessage])
+    }, [setProductQty])
 
     if(!PRODUCT_DATA) return <p>Product not found!!!</p>
 
@@ -100,12 +96,6 @@ export default function ProductScreen(prodtData) {
     <Layout title={PRODUCT_DATA.name}>
         <div className='py-2 w-full flex flex-col items-center'>
             
-            <div className='w-4/6 h-14 flex items-center justify-end'>
-
-                {(MESSAGE.successMessage !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{MESSAGE.successMessage}</span>}
-                {(MESSAGE.errorMessage !== '') && <span className='py-2 px-4 bg-red-300 text-red-800 font-semibold rounded-sm'>{MESSAGE.errorMessage}</span>}
-            </div>
-
             <div className='bg-white w-4/6 p-4 md:p-5 xl:p-10'>
                     
                 <div className='w-full h-12 flex items-center justify-between '>

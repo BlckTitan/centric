@@ -3,13 +3,13 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { displaySuccessMessage } from '@/slices/promptSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { cartItem } from '@/slices/cartSlice';
+import { toast } from 'react-toastify';
 
 export default function ProductItem({product}) {
     const [cart, setCart] = useState()
     const dispatch = useDispatch()
-    const MESSAGE = useSelector((state) => state.promptMessage.successMessage)
 
     const getCartData = async () =>{
         const req = await fetch('http://localhost:5000/cart')
@@ -25,8 +25,8 @@ export default function ProductItem({product}) {
             body: JSON.stringify(productOrder)
         })
 
-        getCartData()
-        dispatch(displaySuccessMessage('Item added successfully!'))
+        getCartData();
+        toast.success('Item added successfully!');
     }
 
     const addToCartHandler = () => {
@@ -36,7 +36,8 @@ export default function ProductItem({product}) {
         const EXISTING_ITEM = cart?.find((item) => item?.type === SELECTED_ITEM?.type)
 
         if(EXISTING_ITEM) {
-            dispatch(displaySuccessMessage('Item already added to cart'))
+            
+            toast.warning('Item already added to cart');
             return false
         }else{
             storeCartData(SELECTED_ITEM)
@@ -50,7 +51,8 @@ export default function ProductItem({product}) {
         setTimeout(() =>{
             dispatch(displaySuccessMessage(''))
         }, 5000)
-    }, [MESSAGE])
+    }, [dispatch]);
+    
   return (
     <div className='card hover:scale-105 h-96'>
 

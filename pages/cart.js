@@ -8,6 +8,7 @@ import { MdHighlightOff } from "react-icons/md";
 import { displaySuccessMessage } from '@/slices/promptSlice';
 import { useRouter } from 'next/router';
 import { getAllCartData, deleteOneCartData } from '@/utils/queryFunc';
+import { toast } from 'react-toastify';
 
 
 
@@ -37,7 +38,7 @@ export default function CartScreen() {
         deleteOneCartData(existingItem.id)
         fetchCart()
         dispatch(cartItem(cart?.length))
-        dispatch(displaySuccessMessage('Item deleted successfully!!!'))
+        toast.success('Item deleted successfully!!!');
     }
 
     const computeTotal = (res) =>{
@@ -65,10 +66,6 @@ export default function CartScreen() {
     <Layout title='Cart' >
 
         <div className='w-full flex flex-col items-center'>
-            <div className='w-5/6 h-16 flex items-center justify-between'>
-                <h1 className='font-semibold xl:text-xl'>Shopping Cart</h1>
-                {(SUCCESS_MESSAGE !== '') && <span className='py-2 px-4 bg-green-300 text-green-800 font-semibold rounded-sm'>{SUCCESS_MESSAGE}</span>}
-            </div>
 
             <div className=' w-5/6 grid md:grid-cols-1 md:gap-5 justify-center bg-white rounded-md py-5 px-10'>
                 <div className='overflow-x-auto md:col-span-3'>
