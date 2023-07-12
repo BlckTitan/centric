@@ -64,14 +64,14 @@ export default function ProductScreen(prodtData) {
     const addToCartHandler = () => {
         const { updatedItem, newItem } = verifyStock();
 
-        if(EXISTING_ITEM && (updatedItem !== '')){
+        if(EXISTING_ITEM && updatedItem !== ''){
             updateCartData(EXISTING_ITEM.id, updatedItem)
             dispatch(displaySuccessMessage('Item updated successfully!'));
         }else if(newItem !== ''){
             createCartData(newItem)
             dispatch(displaySuccessMessage('Item added successfully!'));
         }else{
-            dispatch(displaySuccessMessage('Item already updated'));
+            dispatch(displaySuccessMessage(''));
         }
         getAllCartData();
     }
