@@ -58,3 +58,6 @@ form.loginForm label{
 .dropdown-link{
   @apply w-full hover:bg-indigo-500 hover:text-white py-2  pl-5 block;
 }
+.link{
+  @apply mt-4 font-semibold;
+}

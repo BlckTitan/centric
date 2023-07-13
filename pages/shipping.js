@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import { getShipping } from '@/slices/formSlice';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { getAllCartData } from '@/utils/queryFunc';
+import { cartItem } from '@/slices/cartSlice';
 
 export default function Shipping() {
     
@@ -32,7 +34,14 @@ export default function Shipping() {
             setValue('postalCode', shippingData.postalCode),
             setValue('country', shippingData.country)
         }
-    }, [setValue])
+
+        const RES = async () => {
+            const DATA = await getAllCartData();
+            
+            dispatch(cartItem(DATA.length));
+        }
+        RES()
+    }, [setValue, dispatch])
 
 
     const submitHandler = ({fullName, address, city, postalCode, country}) => {

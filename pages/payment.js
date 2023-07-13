@@ -6,8 +6,10 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPayment } from '@/slices/formSlice';
 import { toast } from 'react-toastify';
+import { getAllCartData } from '@/utils/queryFunc';
+import { cartItem } from '@/slices/cartSlice';
 
-export default function Payment() {
+export default function PaymentScreen() {
 
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState();
     const paymentMthd = useSelector((state) => state.shippingForm.payment)
@@ -54,7 +56,15 @@ export default function Payment() {
             setSelectedPaymentMethod(paymentCookie || '')
         }
 
-    }, [router, shippingCookieData, paymentMthd, paymentCookieData])
+        const RES = async () => {
+            const DATA = await getAllCartData();
+            
+            dispatch(cartItem(DATA.length));
+        }
+        RES()
+            
+
+    }, [dispatch, router, shippingCookieData, paymentMthd, paymentCookieData])
 
   return (
     <Layout title='Payment'>
@@ -95,7 +105,7 @@ export default function Payment() {
                         </button>
 
                         <button 
-                            onClick={() => router.push('/placeorder')}
+                            onClick={() => router.push('/placeOrder')}
                             type='submit'
                             className='primary-button'
                         >

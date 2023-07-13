@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Layout from '@/components/Layout'
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Link from 'next/link';
 import { cartItem } from '@/slices/cartSlice';
 import { displaySuccessMessage } from '@/slices/promptSlice';
@@ -11,7 +11,7 @@ import Product from '@/models/Product';
 import { toast } from 'react-toastify';
 
 export default function ProductScreen(prodtData) {
-    const MESSAGE = useSelector((state) => state.promptMessage)
+    
     const PRODUCT_DATA = prodtData.prodtData;
     const [cartData, setCartData] = useState()
 
@@ -31,7 +31,6 @@ export default function ProductScreen(prodtData) {
         dispatch(cartItem(RES.length))
 
     }
-    console.log(MESSAGE.errorMessage, MESSAGE.successMessage)
 
     const verifyStock = () => {
 

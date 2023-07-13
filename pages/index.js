@@ -6,7 +6,7 @@ import db from '@/utils/db';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-export default function Home({ prodtData, cartData}) {
+export default function HomeScreen({ prodtData, cartData}) {
 
   const dispatch = useDispatch()
   const [products, setProducts] = useState()
