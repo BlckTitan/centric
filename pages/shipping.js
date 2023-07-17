@@ -33,6 +33,10 @@ export default function Shipping() {
             setValue('city', shippingData.city),
             setValue('postalCode', shippingData.postalCode),
             setValue('country', shippingData.country)
+
+            if(!shippingData){
+                return router.push('/cart')
+            }
         }
 
         const RES = async () => {
